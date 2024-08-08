@@ -20,21 +20,31 @@
   left: 492px;
   border-radius: 8px;
 }
+
+@media screen and (max-width: 567px) {
+  .card-container {
+    background-color: #ffffff;
+    box-shadow: none;
+  }
+}
+
 .icon-container {
   width: 98px;
   height: 56px;
   top: 326px;
   left: 671px;
 }
-.icon {
-  width: 98px;
-  height: 56px;
+.icon-icon {
+  width: 77px;
+  height: 38px;
   top: 326px;
-  left: 671px;
+  left: 682px;
+  gap: 0px;
+  opacity: 0px;
   margin-bottom: 0px;
   background-color: transparent;
 }
-.icon-name {
+.icon-title {
   margin-top: 0px;
   width: 98px;
   height: 19px;
@@ -46,6 +56,7 @@
   line-height: 24px;
   letter-spacing: 0.2 px;
   color: #263868;
+  margin-top: 0px;
 }
 .icon-name-part {
   font-family: Futura Md BT;
@@ -99,6 +110,7 @@
   top: 430px;
   left: 540px;
   letter-spacing: 0.5px;
+  margin-bottom: 15px;
 }
 .checkBox-container {
   display: flex;
@@ -124,16 +136,34 @@
   letter-spacing: 0em;
   text-align: left;
 }
-.btn {
-  width: 360px;
+.login-btn {
+  /* width: 360px;
   height: 40px;
-  border-radius: 8px;
-  background: #263868;
+  border-width: 3px #263868 solid;
+  background: transparent;
   font-family: Roboto;
   font-size: 14px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: 0em;
   text-align: center;
-  color: #ffffff;
+  color: #ffffff; */
+  width: 312px;
+  height: 40px;
+  gap: 0px;
+  border-radius: 8px 0px 0px 0px;
+  opacity: 0px;
+  background: #263868;
+  color: white;
+  border-width: 0px;
+}
+.btn-container {
+  display: flex;
+  justify-content: center;
+  background: #263868;
+  width: 360px;
+  height: 40px;
+  gap: 0px;
+  border-radius: 8px 8px 8px 8px;
+  opacity: 0px;
 }
