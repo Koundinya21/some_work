@@ -1,16 +1,15 @@
 import {Component} from 'react'
 
 import {Link} from 'react-router-dom'
+
 import './index.css'
 
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+
 import Header from '../Header'
 
-// import Results from '../Results'
-// import ScoreContext from '../../ReactContext/index'
 import QuestionsBtn from '../QuestionsBtn'
-import Timer from '../Timer'
 
 import OptionsContent from '../Options'
 
@@ -28,20 +27,67 @@ class Assessment extends Component {
     currentQuestion: 0,
     selectedOptionId: '',
     score: 0,
-    // timerRunning: true,
+    timerMinutes: 10,
+    elapsedTimeInSeconds: 0,
+    isTimeRunning: false,
+    total: 0,
   }
 
   componentDidMount() {
     this.requestingQuestions()
+    this.renderTimerComponent()
   }
 
-  setActiveOption = optionId => {
-    this.setState({selectedOptionId: optionId})
+  componentWillUnmount() {
+    this.clearInterval()
   }
 
-  onChangeSingleOption = event => {
-    this.setState({selectedOptionId: event.target.value})
+  clearInterval = () => clearInterval(this.timerId)
+
+  IncrementOfElapsedTime = () => {
+    const {history} = this.props
+    const {isTimeRunning} = this.state
+    const {elapsedTimeInSeconds, timerMinutes, score} = this.state
+    const timerCompleted = timerMinutes * 60 === elapsedTimeInSeconds
+    console.log(isTimeRunning)
+    if (timerCompleted) {
+      clearInterval()
+
+      history.replace('/results', {
+        isTimeRunning: false,
+        elapsedTimeInSeconds,
+        score,
+      })
+    } else {
+      this.setState(prev => ({
+        elapsedTimeInSeconds: prev.elapsedTimeInSeconds + 1,
+      }))
+    }
   }
+
+  renderTimerComponent = () => {
+    this.timerId = setInterval(this.IncrementOfElapsedTime, 1000)
+  }
+
+  renderCompletedTime = () => {
+    const {elapsedTimeInSeconds, timerMinutes} = this.state
+    const timeRemaining = timerMinutes * 60 - elapsedTimeInSeconds
+
+    const Min = Math.floor(timeRemaining / 60)
+    const Sec = Math.floor(timeRemaining % 60)
+
+    const stringifiedMin = Min > 9 ? Min : `0${Min}`
+    const StringifiedSec = Sec > 9 ? Sec : `0${Sec}`
+
+    return timeRemaining > 0 && `00:${stringifiedMin}:${StringifiedSec}`
+  }
+
+  renderTimer = () => (
+    <div className="time-container">
+      <p className="heading">Time Left</p>
+      <p className="time">{this.renderCompletedTime()}</p>
+    </div>
+  )
 
   renderLoadingView = () => (
     <div className="products-loader-container" data-testid="loader">
@@ -81,10 +127,12 @@ class Assessment extends Component {
           isCorrect: option.is_correct,
         })),
       }))
+      const totalQuestions = fetchedData.total
 
       this.setState({
         apiStatus: apiStatusConstants.success,
         questionsData: updatedData,
+        total: totalQuestions,
       })
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
@@ -95,12 +143,12 @@ class Assessment extends Component {
     <div className="failure-container">
       <img
         src="https://res.cloudinary.com/dowxofd2k/image/upload/v1706372545/ugqa3jsdrqmpgseeyt8v.png"
-        alt="failure"
+        alt="failure view"
         className="failure-image"
       />
       <h1 className="failure-heading">Oops! Something went wrong</h1>
       <p className="failure-para">We are having some trouble</p>
-      <Link to="/assess/questions">
+      <Link to="/assessment">
         <button type="button">Retry</button>
       </Link>
     </div>
@@ -134,7 +182,7 @@ class Assessment extends Component {
   increaseCount = () => {
     const {questionsData, currentQuestion} = this.state
 
-    if (currentQuestion + 1 < questionsData.length) {
+    if (currentQuestion < questionsData.length) {
       this.setState(prev => ({
         currentQuestion: prev.currentQuestion + 1,
         selectedOptionId: '',
@@ -142,110 +190,141 @@ class Assessment extends Component {
       this.checkTheAnswer()
     } else {
       console.log('Ended')
-      //   this.setState({TestEnd: true})
     }
   }
+
+  //   setActiveOption = optionId => {
+  //     this.setState({selectedOptionId: optionId})
+  //   }
 
   changeOption = optionId => {
     this.setState({selectedOptionId: optionId})
   }
 
-  //   ClickSubmitBtn = () => {
-  //     this.setState({TestEnd: true})
-  //   }
+  onChangeOption = optionId => {
+    this.setState({selectedOptionId: optionId})
+    console.log(optionId)
+  }
 
   ClickSubmitBtn = () => {
     const {history} = this.props
-    const {score} = this.state
+    clearInterval()
 
-    history.replace('/results', {score})
+    const {score, elapsedTimeInSeconds} = this.state
+    history.replace('/results', {
+      score,
+      isTimeRunning: true,
+      elapsedTimeInSeconds,
+    })
+  }
+
+  handleQuestionClick = questionIndex => {
+    this.setState({currentQuestion: questionIndex})
   }
 
   renderQuestions = () => {
-    const {questionsData, currentQuestion, selectedOptionId, score} = this.state
+    const {
+      questionsData,
+      currentQuestion,
+      selectedOptionId,
+      score,
+      total,
+    } = this.state
 
     const displayingOneQuestion = questionsData[currentQuestion]
     const optionsValue = displayingOneQuestion.options
 
     const NumberOfQuestions = questionsData.length
-    // console.log(selectedOptionId)
+    console.log(selectedOptionId)
 
     console.log(NumberOfQuestions)
     console.log(score)
-
+    console.log(total)
     return (
-      <div className="Main-Background">
-        <div>
-          {/* {!TestEnd ?
-            <div className="container">
-              <div className="questions-Container">
-                <div className="space-between-btn-questions">
-                  <h1 className="question">
-                    {currentQuestion + 1}.{displayingOneQuestion.questionsText}
-                  </h1>
+      //   <div className="Main-Background">
+      //     <div>
+      //       <div className="container">
+      //         <div className="questions-Container">
+      //           <div className="space-between-btn-questions">
+      //   <p className="question">
+      //     {currentQuestion + 1}.{displayingOneQuestion.questionsText}
+      //   </p>
 
-                  <hr className="line" />
+      //             <hr className="line" />
 
-                  <OptionsContent
-                    optionType={displayingOneQuestion.optionsType}
-                    options={optionsValue}
-                    changeOption={this.changeOption}
-                    activeOption={selectedOptionId}
-                  />
-                </div>
+      //   <OptionsContent
+      //     optionType={displayingOneQuestion.optionsType}
+      //     options={optionsValue}
+      //     changeOption={this.changeOption}
+      //     activeOption={selectedOptionId}
+      //     onChangeOption={this.onChangeOption}
+      //   />
+      //           </div>
 
-                {currentQuestion < 9 && (
-                  <div className="button-container">
-                    <button
-                      type="button"
-                      className="next-button"
-                      onClick={this.increaseCount}
-                    >
-                      Next Question
-                    </button>
-                  </div>
-                )}
-              </div>
+      // {currentQuestion < 9 && (
+      //   <div className="button-container">
+      //     <button
+      //       type="button"
+      //       className="next-button"
+      //       onClick={this.increaseCount}
+      //     >
+      //       Next Question
+      //     </button>
+      //   </div>
+      // )}
+      //         </div>
 
-              <div>
-                <Timer />
-                <div className="questions-btn-space">
-                  <QuestionsBtn
-                    currentQuestion={currentQuestion}
-                    questionsData={questionsData}
-                  />
-                  <div className="btn-container">
-                    <button
-                      type="button"
-                      className="btn-submit"
-                      onClick={this.ClickSubmitBtn}
-                    >
-                      Submit Assessment
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <Results score={score} />
-          )} */}
-          <div className="container">
-            <div className="questions-Container">
-              <div className="space-between-btn-questions">
-                <h1 className="question">
-                  {currentQuestion + 1}.{displayingOneQuestion.questionsText}
-                </h1>
+      //         <div>
+      //           <div>{this.renderTimer()}</div>
+      //           <div className="questions-btn-space">
+      //             <QuestionsBtn
+      //               currentQuestion={currentQuestion}
+      //               questionsData={questionsData}
+      //               handleQuestionClick={this.handleQuestionClick}
+      //               questions={questions}
+      //             />
+      // <div className="btn-container">
+      //   <button
+      //     type="button"
+      //     className="btn-submit"
+      //     onClick={this.ClickSubmitBtn}
+      //   >
+      //     Submit Assessment
+      //   </button>
+      // </div>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      <div className="question-opt-numbers-container">
+        <div className="questions-content">
+          <div>
+            <div className="timer-content">{this.renderTimer()}</div>
 
-                <hr className="line" />
-
-                <OptionsContent
-                  optionType={displayingOneQuestion.optionsType}
-                  options={optionsValue}
-                  changeOption={this.changeOption}
-                  activeOption={selectedOptionId}
-                />
-              </div>
-
+            <QuestionsBtn
+              currentQuestion={currentQuestion}
+              questionsData={questionsData}
+              handleQuestionClick={this.handleQuestionClick}
+              total={total}
+              ClickSubmitBtn={this.ClickSubmitBtn}
+            />
+          </div>
+        </div>
+        {/* <div className="questions-container-top-level">
+          <div className="questions-container">
+            <p className="question">
+              {currentQuestion + 1}.{displayingOneQuestion.questionsText}
+            </p>
+            <hr className="line" />
+            <OptionsContent
+              optionType={displayingOneQuestion.optionsType}
+              options={optionsValue}
+              changeOption={this.changeOption}
+              activeOption={selectedOptionId}
+              onChangeOption={this.onChangeOption}
+            />
+            <div>
               {currentQuestion < 9 && (
                 <div className="button-container">
                   <button
@@ -258,26 +337,34 @@ class Assessment extends Component {
                 </div>
               )}
             </div>
-
-            <div>
-              <Timer />
-              <div className="questions-btn-space">
-                <QuestionsBtn
-                  currentQuestion={currentQuestion}
-                  questionsData={questionsData}
-                />
-                <div className="btn-container">
-                  <button
-                    type="button"
-                    className="btn-submit"
-                    onClick={this.ClickSubmitBtn}
-                  >
-                    Submit Assessment
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
+        </div> */}
+
+        <div className="questions-options-container questions-options-next-btn-container">
+          <div className="">
+            <p className="question">
+              {currentQuestion + 1}.{displayingOneQuestion.questionsText}
+            </p>
+            <hr className="line" />
+            <OptionsContent
+              optionType={displayingOneQuestion.optionsType}
+              options={optionsValue}
+              changeOption={this.changeOption}
+              activeOption={selectedOptionId}
+              onChangeOption={this.onChangeOption}
+            />
+          </div>
+          {/* <div className="btn-align-container"> */}
+          {currentQuestion < 9 && (
+            <button
+              type="button"
+              onClick={this.increaseCount}
+              className="next-question-btn"
+            >
+              Next Question
+            </button>
+          )}
+          {/* </div> */}
         </div>
       </div>
     )
@@ -300,9 +387,11 @@ class Assessment extends Component {
 
   render() {
     return (
-      <div className="Assessment-container">
-        <Header />
-        {this.renderTheQuestionsPart()}
+      <div>
+        <div>
+          <Header />
+        </div>
+        <div>{this.renderTheQuestionsPart()}</div>
       </div>
     )
   }
