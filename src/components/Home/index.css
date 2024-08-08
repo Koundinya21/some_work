@@ -1,159 +1,72 @@
-/* .container {
+.header-content-home {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
-.bottom-container {
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
-}
-.home-container {
+.container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  background-color: white;
+  background-size: cover;
+  height: 100vh;
 }
-
-.card-container-home {
-  width: 568px;
-  height: 427px;
-  top: 343px;
-  left: 776px;
-  background: #ffffff;
-  box-shadow: 0px 4px 16px 0px #7b879429;
+.sub-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
+  width: 100vw;
 }
-@media screen and (max-width: 576px) {
-  .home-container {
+@media screen and (min-width: 576px) {
+  .sub-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  .card-container-home {
-    order: 1;
-  }
-  .img-container {
-    order: 0;
+    flex-direction: row;
   }
 }
-.heading {
-  width: 173px;
-  height: 38px;
-  top: 321px;
-  left: 144px;
-  font-family: Roboto;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 38px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #164687;
-  padding-left: 25px;
-}
-
-.list {
-  list-style-type: number;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-left: 10px;
-}
-
-.list-item {
-  height: 28px;
-  top: 391px;
-  left: 172px;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: #496387;
-}
-.list-item-part {
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 28px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: #496387;
-}
-
 .home-icon {
-  width: 568px;
-  height: 427px;
+  width: 368px;
+  height: 227px;
   top: 343px;
   left: 776px;
-  margin-left: 45px;
+  gap: 0px;
+  opacity: 0px;
+  order: 1;
 }
-
-.start-assess-btn {
-  width: Hug (171px);
-  height: Hug (44px);
-  top: 747px;
-  left: 144px;
-  padding: 8px, 16px, 8px, 16px;
-  border-radius: 4px;
-  gap: 8px;
-  background: #164687;
-  color: white;
-  padding: 10px;
-  border: 0px;
-  margin-left: 22px;
-} */
-.instruction {
-  width: 173px;
-  height: 38px;
-  top: 321px;
-  left: 144px;
-  font-family: Roboto;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 38px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #164687;
-  padding-left: 25px;
-}
-.home-container {
-  display: flex;
-  flex-direction: column;
-}
-.home-components-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-.card-component {
-  width: 531px;
-  height: 430px;
-  margin-top: 10px;
+.card-container {
+  width: 80%;
+  height: auto;
   top: 273px;
   left: 96px;
   gap: 0px;
-  border-radius: 8px 0px 0px 0px;
   opacity: 0px;
   background: #ffffff;
   padding: 20px;
-  box-shadow: 0px 4px 16px 0px #7b879429;
+  order: 0;
 }
-.heading {
-  width: 173px;
-  height: 38px;
-  top: 321px;
-  left: 144px;
+
+@media screen and (min-width: 576px) {
+  .card-container {
+    box-shadow: 0px 4px 16px 0px #7b879429;
+    width: 500px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .card-container {
+    order: 1;
+  }
+  .home-icon {
+    order: 0;
+    margin-bottom: 10px;
+  }
+}
+.head {
+  font-family: Roboto;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 37.5px;
+  text-align: center;
+  color: #164687;
 }
 .list {
   list-style-type: number;
@@ -164,7 +77,7 @@
 }
 .list-item-part {
   font-family: Roboto;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 28px;
 
@@ -175,23 +88,11 @@
   top: 391px;
   left: 172px;
   font-family: Roboto;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 28px;
   letter-spacing: 0em;
-  text-align: center;
-  color: #496387;
-}
-.list-item {
-  height: 28px;
-  top: 391px;
-  left: 172px;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
-  letter-spacing: 0em;
-  text-align: center;
+  text-align: start;
   color: #496387;
 }
 .start-assess-btn {
@@ -207,12 +108,4 @@
   padding: 10px;
   border: 0px;
   margin-left: 22px;
-}
-.home-icon {
-  width: 568px;
-  height: 427px;
-  top: 343px;
-  left: 776px;
-  gap: 0px;
-  opacity: 0px;
 }
