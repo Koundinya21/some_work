@@ -3,33 +3,48 @@ import QuestionNumber from '../QuestionNumbers'
 import './index.css'
 
 const QuestionsBtn = props => {
-  const {currentQuestion, questionsData} = props
+  const {
+    currentQuestion,
+    questionsData,
+    handleQuestionClick,
+    total,
+    ClickSubmitBtn,
+  } = props
+  const onClickOfSubmit = () => {
+    ClickSubmitBtn()
+  }
 
   return (
-    <div>
-      <div className="background-card">
+    <div className="background-card">
+      <div>
         <div className="question-count-container">
-          <div className="content">
-            <p className="question-number">{currentQuestion + 1}</p>
-            <p className="question-content">Answered Question</p>
+          <div className="content1">
+            <p className="question-number">{currentQuestion}</p>
+            <p className="question-content">Answered Questions</p>
           </div>
           <div className="content2">
             <p className="question-number color-number">
-              {10 - currentQuestion - 1}
+              {`${total - currentQuestion}`}
             </p>
-            <p className="question-content">Unanswered Question</p>
+            <p className="question-content">Unanswered Questions</p>
           </div>
         </div>
         <hr className="line-between-question-numbers" />
         <div className="question-numbers-submit-button-container">
           <div>
-            <h1 className="questions">Questions (10)</h1>
+            <h1 className="questions">{`Questions (${total})`}</h1>
             <ul className="numbers-list">
-              <QuestionNumber questionNumberCount={questionsData.length} />
+              <QuestionNumber
+                questionNumberCount={questionsData.length}
+                handleQuestionClick={handleQuestionClick}
+              />
             </ul>
           </div>
         </div>
       </div>
+      <button type="button" className="btn-submit" onClick={onClickOfSubmit}>
+        Submit Assessment
+      </button>
     </div>
   )
 }
