@@ -7,7 +7,7 @@ class OptionsContent extends Component {
     // console.log(options)
 
     return (
-      <ul className="Default-list">
+      <ul className="default-options">
         {options.map(eachOption => {
           const {changeOption, activeOption} = this.props
           const onClickOption = () => {
@@ -17,17 +17,19 @@ class OptionsContent extends Component {
 
           const optionClassName =
             activeOption === eachOption.idOption
-              ? 'active-btn-default Default-list-item'
-              : 'Default-list-item'
+              ? 'btn-characteristics selected-option-bg-color'
+              : 'btn-characteristics'
 
           return (
-            <li
-              key={eachOption.id}
-              className={optionClassName}
-              onClick={onClickOption}
-            >
-              <button type="button" className="default-btn" value={eachOption}>
-                {eachOption.text}
+            <li key={eachOption.idOption} onClick={onClickOption}>
+              {/* <button type="button" className="btn-class" value={eachOption}>
+               */}
+              <button
+                type="button"
+                className={optionClassName}
+                value={eachOption}
+              >
+                <p className="btn-data">{eachOption.text}</p>
               </button>
             </li>
           )
@@ -36,34 +38,74 @@ class OptionsContent extends Component {
     )
   }
 
+  // renderSingleOptions = () => {
+  //   const {options} = this.props
+
+  //   return (
+  //     <div className="single-option-container">
+  //       <select className="single-option">
+  //         {options.map(eachOption => {
+  //           const {onChangeSingleOption, activeOption} = this.props
+  //           const onChangeOfValue = event => {
+  //             onChangeSingleOption(event.target.value)
+  //             console.log(event.target.value)
+  //             console.log(eachOption.idOption)
+  //           }
+
+  //           const activeOptionClassName =
+  //             activeOption === eachOption.idOption ? 'single-option-text' : ''
+  //           return (
+  //             <option
+  //               key={eachOption.optionId}
+  //               value={eachOption}
+  //               className={activeOptionClassName}
+  //               onChange={onChangeOfValue}
+  //             >
+  //               {eachOption.text}
+  //             </option>
+  //           )
+  //         })}
+  //       </select>
+  //     </div>
+  //   )
+  // }
   renderSingleOptions = () => {
-    const {options} = this.props
+    const {options, onChangeOption} = this.props
+
+    const onChangeOfValue = event => {
+      const selectedOptionId = event.target.value
+      onChangeOption(selectedOptionId)
+      console.log('HELOO')
+    }
 
     return (
-      <div className="single-option-container">
-        <select className="single-option">
-          {options.map(eachOption => {
-            const {onChangeSingleOption, activeOption} = this.props
-            const onChangeOfValue = event => {
-              onChangeSingleOption(event.target.value)
-              console.log(event.target.value)
-              console.log(eachOption.idOption)
-            }
+      <div className="items-single-option">
+        <div className="single-option-container">
+          <select className="single-option" onChange={onChangeOfValue}>
+            {options.map(eachOption => {
+              const {activeOption} = this.props
 
-            const activeOptionClassName =
-              activeOption === eachOption.idOption ? 'single-option-text' : ''
-            return (
-              <option
-                key={eachOption.optionId}
-                value={eachOption}
-                className={activeOptionClassName}
-                onChange={onChangeOfValue}
-              >
-                {eachOption.text}
-              </option>
-            )
-          })}
-        </select>
+              const activeOptionClassName =
+                activeOption === eachOption.idOption ? 'single-option-text' : ''
+              return (
+                <option
+                  key={eachOption.idOption}
+                  value={eachOption.idOption}
+                  className={activeOptionClassName}
+                >
+                  {eachOption.text}
+                </option>
+              )
+            })}
+          </select>
+        </div>
+
+        {/* <div className="caution-item">
+          <img
+            src="https://res.cloudinary.com/dowxofd2k/image/upload/v1714244506/Round_h6sgdt.png"
+            alt="caution"
+          />
+        </div> */}
       </div>
     )
   }
@@ -87,7 +129,7 @@ class OptionsContent extends Component {
             <li onClick={onClickImage} className={activeImageClassName}>
               <button type="button" className="options-btn">
                 <img
-                  key={eachOptions.id}
+                  key={eachOptions.idOption}
                   src={eachOptions.imageUrl}
                   className="image-options"
                   alt={eachOptions.text}
