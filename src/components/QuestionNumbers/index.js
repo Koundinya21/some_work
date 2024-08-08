@@ -2,7 +2,7 @@ import './index.css'
 import {useState} from 'react'
 
 const QuestionNumber = props => {
-  const {questionNumberCount} = props
+  const {questionNumberCount, handleQuestionClick} = props
   const numbers = Array.from(Array(questionNumberCount).keys())
 
   //   const [activeNumber, setActiveNumber] = useState('')
@@ -10,6 +10,8 @@ const QuestionNumber = props => {
 
   const handleButtonClick = number => {
     // setActiveNumber(number)
+    handleQuestionClick(number)
+
     if (!attemptedQuestion.includes(number)) {
       setAttemptedQuestion([...attemptedQuestion, number])
     }
