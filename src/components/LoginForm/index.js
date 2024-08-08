@@ -78,9 +78,9 @@ class LoginForm extends Component {
           <img
             src="https://res.cloudinary.com/dowxofd2k/image/upload/v1705951324/cbk9qzsgq1kcwynws0sl.png"
             alt="login website logo"
-            className="icon"
+            className="icon-icon"
           />
-          <h1 className="icon-name">
+          <h1 className="icon-title">
             <span className="icon-name-part">NXT</span> Assess
           </h1>
           <form onSubmit={this.submitTheForm}>
@@ -124,9 +124,16 @@ class LoginForm extends Component {
               </label>
             </div>
             <br />
-            <button type="submit" className="btn">
-              Login
-            </button>
+            {/* <div className="btn-container">
+              <button type="submit" className="btn" value="Login">
+                Login
+              </button>
+            </div> */}
+            <div className="btn-container">
+              <button type="submit" value="Login" className="login-btn">
+                Login
+              </button>
+            </div>
             {isBool && <p>*{errorMessage}</p>}
           </form>
         </div>
